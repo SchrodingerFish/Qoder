@@ -1,4 +1,4 @@
-# 🛠️ Qoder - 现代化 SQL 编辑器
+# 🛠️ 简单SQL编辑器
 
 <div align="center">
 
