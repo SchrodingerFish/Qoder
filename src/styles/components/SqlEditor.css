@@ -1,0 +1,124 @@
+.sql-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+}
+
+.editor-shortcuts {
+    padding: 0.5rem 1rem;
+    background-color: #2d2d30;
+    border-top: 1px solid #3e3e42;
+    font-size: 0.75rem;
+    color: #cccccc;
+    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editor-shortcuts span {
+    color: #569cd6;
+}
+
+.selection-hint {
+    color: #4ec9b0;
+    font-weight: 500;
+}
+
+/* Monaco Editor 自定义样式 */
+.monaco-editor .monaco-editor-background {
+    background-color: #1e1e1e !important;
+}
+
+.monaco-editor .margin {
+    background-color: #1e1e1e !important;
+}
+
+.monaco-editor .glyph-margin {
+    background-color: #1e1e1e !important;
+}
+
+.monaco-editor .line-numbers {
+    color: #858585 !important;
+}
+
+.monaco-editor .current-line {
+    background-color: #2a2d2e !important;
+    border: none !important;
+}
+
+.monaco-editor .cursor {
+    color: #aeafad !important;
+}
+
+.monaco-editor .selected-text {
+    background-color: #264f78 !important;
+}
+
+.monaco-editor .focused .selected-text {
+    background-color: #264f78 !important;
+}
+
+.monaco-editor .view-overlays .current-line {
+    border: none !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* SQL 语法高亮自定义 */
+.monaco-editor .token.keyword {
+    color: #569cd6 !important;
+    font-weight: bold !important;
+}
+
+.monaco-editor .token.string {
+    color: #ce9178 !important;
+}
+
+.monaco-editor .token.comment {
+    color: #6a9955 !important;
+    font-style: italic !important;
+}
+
+.monaco-editor .token.number {
+    color: #b5cea8 !important;
+}
+
+.monaco-editor .token.type {
+    color: #4ec9b0 !important;
+}
+
+.monaco-editor .token.identifier {
+    color: #9cdcfe !important;
+}
+
+/* 滚动条样式 */
+.monaco-editor .monaco-scrollable-element > .scrollbar > .scroller {
+    background-color: rgba(121, 121, 121, 0.4) !important;
+}
+
+.monaco-editor .monaco-scrollable-element > .scrollbar > .scroller:hover {
+    background-color: rgba(121, 121, 121, 0.7) !important;
+}
+
+/* 自动完成建议框 */
+.monaco-editor .suggest-widget {
+    background-color: #252526 !important;
+    border: 1px solid #454545 !important;
+    color: #cccccc !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row {
+    background-color: transparent !important;
+    color: #cccccc !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row.focused {
+    background-color: #094771 !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row:hover {
+    background-color: #2a2d2e !important;
+}
