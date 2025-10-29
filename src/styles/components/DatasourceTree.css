@@ -1,0 +1,281 @@
+.datasource-tree {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #252526;
+    border-right: 1px solid #3e3e42;
+    overflow: hidden;
+}
+
+.datasource-tree .tree-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #2d2d30;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.datasource-tree .tree-header h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #cccccc;
+}
+
+.datasource-tree .refresh-btn {
+    background: none;
+    border: none;
+    color: #569cd6;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 3px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.datasource-tree .refresh-btn:hover:not(:disabled) {
+    background-color: rgba(86, 156, 214, 0.1);
+}
+
+.datasource-tree .refresh-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.datasource-tree .tree-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.5rem 0;
+}
+
+.datasource-tree .tree-content.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.datasource-tree .loading-state,
+.datasource-tree .error-state,
+.datasource-tree .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #858585;
+}
+
+.datasource-tree .loading-state .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(86, 156, 214, 0.2);
+    border-top-color: #569cd6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.datasource-tree .loading-state p,
+.datasource-tree .empty-state p {
+    margin: 0.25rem 0;
+    font-size: 0.875rem;
+}
+
+.datasource-tree .empty-state .empty-hint {
+    font-size: 0.75rem;
+    color: #6e6e6e;
+}
+
+.datasource-tree .empty-icon,
+.datasource-tree .error-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.datasource-tree .error-state {
+    color: #f48771;
+}
+
+.datasource-tree .error-message {
+    font-size: 0.75rem;
+    margin: 0.5rem 0;
+    color: #858585;
+}
+
+.datasource-tree .retry-btn {
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background-color: #0e639c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: background-color 0.2s ease;
+}
+
+.datasource-tree .retry-btn:hover {
+    background-color: #1177bb;
+}
+
+.datasource-tree .tree-nodes {
+    padding: 0;
+}
+
+.datasource-tree .tree-node-container {
+    user-select: none;
+}
+
+.datasource-tree .tree-node {
+    display: flex;
+    align-items: center;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.datasource-tree .tree-node:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.datasource-tree .tree-node.category {
+    font-weight: 500;
+}
+
+.datasource-tree .tree-node.datasource {
+    font-weight: 400;
+}
+
+.datasource-tree .tree-node .node-content {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+}
+
+.datasource-tree .tree-node .expand-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: #858585;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.datasource-tree .tree-node .expand-icon.empty {
+    visibility: hidden;
+}
+
+.datasource-tree .tree-node .expand-icon:hover {
+    color: #cccccc;
+}
+
+.datasource-tree .tree-node .node-checkbox {
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: #0e639c;
+}
+
+.datasource-tree .tree-node .node-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.datasource-tree .tree-node .node-label {
+    font-size: 0.875rem;
+    color: #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.datasource-tree .tree-node.level-0 {
+    padding-left: 0.5rem;
+}
+
+.datasource-tree .tree-node.level-1 {
+    padding-left: 1.5rem;
+}
+
+.datasource-tree .tree-node.level-2 {
+    padding-left: 2.5rem;
+}
+
+.datasource-tree .tree-node.level-3 {
+    padding-left: 3.5rem;
+}
+
+.datasource-tree .tree-children {
+    margin-left: 0;
+}
+
+.datasource-tree .tree-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #2d2d30;
+    border-top: 1px solid #3e3e42;
+}
+
+.datasource-tree .selected-count {
+    font-size: 0.75rem;
+    color: #569cd6;
+    font-weight: 500;
+}
+
+.datasource-tree .clear-btn {
+    padding: 0.3rem 0.6rem;
+    background-color: transparent;
+    color: #858585;
+    border: 1px solid #3e3e42;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.datasource-tree .clear-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #cccccc;
+    border-color: #569cd6;
+}
+
+/* 滚动条样式 */
+.datasource-tree .tree-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.datasource-tree .tree-content::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.datasource-tree .tree-content::-webkit-scrollbar-thumb {
+    background: #424242;
+    border-radius: 4px;
+}
+
+.datasource-tree .tree-content::-webkit-scrollbar-thumb:hover {
+    background: #4e4e4e;
+}

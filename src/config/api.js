@@ -13,6 +13,8 @@ export const API_CONFIG = {
         GET_TABLES: '/api/tables',
         GET_SCHEMA: '/api/schema',
         EXPORT_EXCEL: '/api/export-excel', // Excel导出端点
+        DATASOURCE_TREE: '/api/datasource/tree', // 数据源树形结构
+        MULTI_DATASOURCE_QUERY: '/api/datasource/multi-query', // 多数据源查询
     },
 
     // 请求配置

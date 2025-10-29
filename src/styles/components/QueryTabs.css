@@ -1,0 +1,235 @@
+.query-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    overflow: hidden;
+}
+
+.query-tabs.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.query-tabs .empty-state {
+    text-align: center;
+    color: #858585;
+    padding: 2rem;
+}
+
+.query-tabs .empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.query-tabs .empty-state h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    color: #cccccc;
+}
+
+.query-tabs .empty-state p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.query-tabs .tabs-header {
+    display: flex;
+    align-items: center;
+    background-color: #2d2d30;
+    border-bottom: 1px solid #3e3e42;
+    overflow: hidden;
+}
+
+.query-tabs .tabs-list {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+}
+
+.query-tabs .tabs-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.query-tabs .tabs-list::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.query-tabs .tabs-list::-webkit-scrollbar-thumb {
+    background: #424242;
+    border-radius: 2px;
+}
+
+.query-tabs .tab-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    background-color: #2d2d30;
+    border-right: 1px solid #3e3e42;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-width: 0;
+    position: relative;
+}
+
+.query-tabs .tab-item:hover {
+    background-color: #37373d;
+}
+
+.query-tabs .tab-item.active {
+    background-color: #1e1e1e;
+    border-bottom: 2px solid #0e639c;
+}
+
+.query-tabs .tab-item.success .tab-icon {
+    color: #4ec9b0;
+}
+
+.query-tabs .tab-item.error .tab-icon {
+    color: #f48771;
+}
+
+.query-tabs .tab-item .tab-icon {
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.query-tabs .tab-item .tab-label {
+    font-size: 0.875rem;
+    color: #cccccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+.query-tabs .tab-item .tab-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    background-color: rgba(86, 156, 214, 0.15);
+    color: #569cd6;
+    border-radius: 10px;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.query-tabs .tab-item.error .tab-badge {
+    background-color: rgba(244, 135, 113, 0.15);
+    color: #f48771;
+}
+
+.query-tabs .tab-item .tab-close {
+    display: none;
+    background: none;
+    border: none;
+    color: #858585;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2rem;
+    line-height: 1;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.query-tabs .tab-item:hover .tab-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.query-tabs .tab-item .tab-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #cccccc;
+}
+
+.query-tabs .close-all-btn {
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: #858585;
+    border: none;
+    border-left: 1px solid #3e3e42;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.query-tabs .close-all-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #cccccc;
+}
+
+.query-tabs .tabs-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.query-tabs .tab-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.query-tabs .tab-panel-header {
+    padding: 0.75rem 1rem;
+    background-color: #252526;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.query-tabs .datasource-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.query-tabs .datasource-info .info-label {
+    color: #858585;
+    font-weight: 500;
+}
+
+.query-tabs .datasource-info .info-value {
+    color: #569cd6;
+    font-weight: 500;
+}
+
+.query-tabs .datasource-info .info-separator {
+    color: #3e3e42;
+}
+
+.query-tabs .tab-panel-body {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .query-tabs .tab-item {
+        padding: 0.5rem 0.6rem;
+        gap: 0.4rem;
+    }
+
+    .query-tabs .tab-item .tab-label {
+        max-width: 100px;
+    }
+
+    .query-tabs .close-all-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.7rem;
+    }
+
+    .query-tabs .datasource-info {
+        font-size: 0.7rem;
+        flex-wrap: wrap;
+    }
+}
