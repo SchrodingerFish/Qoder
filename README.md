@@ -1,4 +1,4 @@
-# 🛠️ 简单SQL编辑器
+# 🛠️ 多功能 SQL 查询工具（客户端）
 
 <div align="center">
 
@@ -54,10 +54,32 @@ Qoder 是一个专为数据分析师、数据库管理员和开发人员设计�
     -   详细的错误信息显示
 
 -   **📊 强大的结果展示**
+
     -   表格形式展示查询结果，支持大数据量
     -   智能分页：10/25/50/100 行每页
     -   横向滚动支持，完美处理宽表格
     -   NULL 值和未定义值的特殊显示
+
+-   **🌲 多数据源树形管理**
+
+    -   树形展示数据源，支持分类管理
+    -   支持多级分类（生产环境、测试环境、开发环境等）
+    -   数据源勾选功能，支持多选并行查询
+    -   实时刷新数据源列表
+
+-   **🔀 多数据源并行查询**
+
+    -   同时查询多个数据源，提高效率
+    -   每个数据源的结果在独立标签页中展示
+    -   显示每个数据源的执行时间和状态
+    -   完善的错误信息展示和状态指示
+
+-   **📑 多标签页结果管理**
+
+    -   每个数据源的查询结果在独立标签页展示
+    -   成功/失败状态的颜色区分
+    -   支持关闭单个或所有标签页
+    -   标签页支持上下左右滚动浏览
 
 ### 🛠️ 高级功能
 
@@ -70,14 +92,22 @@ Qoder 是一个专为数据分析师、数据库管理员和开发人员设计�
 
 -   **📤 数据导出**
 
-    -   支持 Excel 格式导出查询结果
-    -   自动生成带时间戳的文件名
-    -   支持大数据量导出
+    -   **单数据源导出**：支持 Excel 格式导出当前查询结果
+    -   **多数据源 ZIP 导出**：一键导出所有数据源结果为压缩包
+    -   自动生成带时间戳的文件名，避免覆盖
+    -   支持大数据量导出，包含错误信息的智能处理
+
+-   **⬍ 灵活布局系统**
+
+    -   **专注编辑器模式**：编辑器占满整个界面，专注编写 SQL
+    -   **分屏模式**：编辑器和结果区域并排，可自由调整比例
+    -   **专注结果模式**：结果区域占满整个界面，专注查看数据
+    -   可拖拽分隔条调整高度比例，设置自动保存
 
 -   **🔄 双模式支持**
 
     -   **模拟数据模式**：内置示例数据，无需后端服务
-    -   **真实 API 模式**：连接真实数据库服务
+    -   **真实 API 模式**：连接真实数据库服务，支持多数据源
     -   一键切换，实时状态检测
 
 -   **🌐 API 连接管理**
@@ -215,12 +245,15 @@ qoder/
 
 #### 🎯 组件层 (`src/components/`)
 
--   **`SqlEditor.jsx`** - 基于 Monaco Editor 的 SQL 编辑器
+-   **`SqlEditor.jsx`** - 基于 Monaco Editor 的 SQL 编辑器，支持布局切换
 -   **`QueryResult.jsx`** - 查询结果展示，支持分页、复制、导出等功能
+-   **`DatasourceTree.jsx`** - 数据源树形组件，支持多级分类和多选
+-   **`QueryTabs.jsx`** - 多标签页组件，管理多数据源查询结果
 
 #### 🔧 服务层 (`src/services/`)
 
 -   **`sqlApi.js`** - SQL 查询服务，支持模拟数据和真实 API 两种模式
+-   **`datasourceApi.js`** - 数据源管理 API，支持树形展示、多数据源查询和 ZIP 导出
 
 #### ⚙️ 配置层 (`src/config/`)
 
@@ -257,14 +290,36 @@ qoder/
 
 #### 📤 数据导出
 
--   点击"导出 Excel"按钮
--   自动下载包含查询结果的 Excel 文件
--   文件名包含时间戳，避免重复
+-   **单数据源导出**：点击"导出 Excel"按钮，下载当前查询结果
+-   **多数据源 ZIP 导出**：点击"📦 导出为 ZIP"按钮，一键导出所有数据源结果
+-   自动生成带时间戳的文件名，避免覆盖
+-   包含错误信息的智能处理
+
+#### 🌲 数据源管理
+
+-   **切换到真实 API 模式**：点击右上角"模拟数据"按钮切换模式
+-   **查看数据源树**：左侧边栏显示按分类组织的数据源
+-   **选择数据源**：勾选需要查询的数据源（支持多选）
+-   **展开/折叠分类**：点击分类前的箭头图标
+
+#### 🔀 多数据源查询
+
+-   选择多个数据源后执行查询
+-   每个数据源的结果在独立标签页中展示
+-   显示执行时间、状态和详细错误信息
+-   支持关闭单个或所有标签页
+
+#### ⬍ 布局切换
+
+-   **专注编辑器模式**：点击"📝"按钮，编辑器占满整个界面
+-   **分屏模式**：点击"⬍"按钮，编辑器和结果区域并排显示
+-   **专注结果模式**：点击"📊"按钮，结果区域占满整个界面
+-   在分屏模式下可拖拽分隔条调整高度比例
 
 #### 🔄 模式切换
 
 -   **模拟数据模式**：使用内置示例数据，适合演示和测试
--   **真实 API 模式**：连接实际的数据库服务
+-   **真实 API 模式**：连接实际的数据库服务，支持多数据源功能
 
 ### 快捷键
 
@@ -343,6 +398,101 @@ Content-Type: application/json
 响应: Excel 文件流
 Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 ```
+
+#### 4. 获取数据源树形结构
+
+```
+GET /api/datasource/tree
+```
+
+**响应示例：**
+
+```json
+[
+    {
+        "id": "category_1",
+        "label": "生产环境",
+        "type": "category",
+        "children": [
+            {
+                "id": "datasource_1",
+                "label": "主业务数据库",
+                "type": "datasource",
+                "datasourceCode": "main_business",
+                "description": "主要业务系统数据库"
+            }
+        ]
+    }
+]
+```
+
+#### 5. 多数据源并行查询
+
+```
+POST /api/datasource/multi-query
+Content-Type: application/json
+
+请求体:
+{
+  "query": "SELECT * FROM users LIMIT 10",
+  "datasourceCodes": ["main_business", "order_db"],
+  "options": {
+    "timeout": 30000,
+    "format": "json",
+    "includeMetadata": true,
+    "maxRows": 10000
+  }
+}
+```
+
+**成功响应：**
+
+```json
+{
+  "success": true,
+  "message": "多数据源查询完成: 成功 2/2, 失败 0/2",
+  "totalExecutionTime": 1250,
+  "results": [
+    {
+      "datasourceCode": "main_business",
+      "datasourceName": "主业务数据库",
+      "success": true,
+      "data": [...],
+      "rowCount": 10,
+      "executionTime": 850
+    },
+    {
+      "datasourceCode": "order_db",
+      "datasourceName": "订单数据库",
+      "success": true,
+      "data": [...],
+      "rowCount": 8,
+      "executionTime": 920
+    }
+  ]
+}
+```
+
+#### 6. 多数据源 ZIP 导出
+
+```
+POST /api/export-multi-datasource-excel
+Content-Type: application/json
+
+请求体:
+{
+  "query": "SELECT * FROM users",
+  "datasourceCodes": ["main_business", "order_db"],
+  "fileNamePrefix": "multi_export",
+  "options": {
+    "timeout": 30000,
+    "maxRows": 10000
+  }
+}
+```
+
+**响应：** ZIP 文件流
+Content-Type: application/zip
 
 ### 错误处理
 
