@@ -82,20 +82,84 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     padding: 1rem;
     overflow: hidden;
     min-height: 0;
+    position: relative;
 }
 
 .editor-section,
 .result-section {
-    flex: 1;
     display: flex;
     flex-direction: column;
     background-color: #252526;
     border-radius: 6px;
     overflow: hidden;
+    transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+.editor-section.hidden,
+.result-section.hidden {
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* 可拖拽的分隔条 */
+.resizer {
+    height: 8px;
+    cursor: ns-resize;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.resizer:hover .resizer-handle,
+.resizer.dragging .resizer-handle {
+    background-color: #0e639c;
+}
+
+.resizer-handle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+}
+
+.resizer-line {
+    width: 60px;
+    height: 3px;
+    background-color: #3e3e42;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.resizer:hover .resizer-line,
+.resizer.dragging .resizer-line {
+    width: 80px;
+    height: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(14, 99, 156, 0.5);
+}
+
+.resizer.dragging {
+    cursor: ns-resize;
+}
+
+/* 拖拽时禁用文本选择 */
+body.dragging {
+    cursor: ns-resize !important;
+    user-select: none !important;
+}
+
+body.dragging * {
+    cursor: ns-resize !important;
 }
 
 .editor-header,
@@ -125,6 +189,46 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+/* 布局切换按钮 */
+.layout-toggle-buttons {
+    display: flex;
+    gap: 0;
+    background-color: #3c3c3c;
+    border-radius: 4px;
+    padding: 2px;
+    border: 1px solid #5a5a5a;
+}
+
+.layout-btn {
+    padding: 0.4rem 0.6rem;
+    background-color: transparent;
+    color: #cccccc;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+}
+
+.layout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.layout-btn.active {
+    background-color: #0e639c;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.layout-btn:active {
+    transform: scale(0.95);
 }
 
 .selected-info,
@@ -280,7 +384,7 @@
     }
 
     .content-area {
-        padding: 1rem;
+        padding: 0.5rem;
     }
 
     .sidebar {
@@ -305,5 +409,30 @@
 
     .status-text {
         min-width: 35px;
+    }
+
+    .layout-toggle-buttons {
+        padding: 1px;
+    }
+
+    .layout-btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+        min-width: 32px;
+    }
+
+    .resizer {
+        height: 12px;
+    }
+
+    .resizer-line {
+        width: 40px;
+        height: 4px;
+    }
+
+    .resizer:hover .resizer-line,
+    .resizer.dragging .resizer-line {
+        width: 60px;
+        height: 5px;
     }
 }

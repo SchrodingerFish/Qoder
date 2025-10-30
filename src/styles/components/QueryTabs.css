@@ -149,6 +149,41 @@
     color: #cccccc;
 }
 
+.query-tabs .tabs-actions {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.query-tabs .export-all-btn {
+    padding: 0.5rem 1rem;
+    background-color: #0e639c;
+    color: white;
+    border: none;
+    border-left: 1px solid #3e3e42;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.query-tabs .export-all-btn:hover:not(:disabled) {
+    background-color: #1177bb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(14, 99, 156, 0.3);
+}
+
+.query-tabs .export-all-btn:disabled {
+    background-color: #4a4a4a;
+    color: #888888;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
 .query-tabs .close-all-btn {
     padding: 0.5rem 1rem;
     background-color: transparent;
@@ -209,7 +244,8 @@
 
 .query-tabs .tab-panel-body {
     flex: 1;
-    overflow: hidden;
+    overflow: auto; /* 允许滚动 */
+    min-height: 0; /* 确保flex子元素可以缩小 */
 }
 
 /* 响应式设计 */
@@ -223,6 +259,7 @@
         max-width: 100px;
     }
 
+    .query-tabs .export-all-btn,
     .query-tabs .close-all-btn {
         padding: 0.5rem 0.75rem;
         font-size: 0.7rem;

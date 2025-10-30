@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { exportToExcel } from '../services/sqlApi';
 import '../styles/components/QueryResult.css';
 
-const QueryResult = ({ result, isLoading, query, database = 'mine' }) => {
+const QueryResult = ({ result, isLoading, query, database = 'mine', showExportButton = true }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(50);
     const [isExporting, setIsExporting] = useState(false); // 导出状态
@@ -260,14 +260,16 @@ const QueryResult = ({ result, isLoading, query, database = 'mine' }) => {
                         <option value={100}>100/页</option>
                     </select>
 
-                    <button
-                        className="export-btn"
-                        onClick={handleExportToExcel}
-                        disabled={isExporting}
-                        title="导出为Excel"
-                    >
-                        {isExporting ? '导出中...' : '导出Excel'}
-                    </button>
+                    {showExportButton && (
+                        <button
+                            className="export-btn"
+                            onClick={handleExportToExcel}
+                            disabled={isExporting}
+                            title="导出为Excel"
+                        >
+                            {isExporting ? '导出中...' : '导出Excel'}
+                        </button>
+                    )}
                 </div>
             </div>
 

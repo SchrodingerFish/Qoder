@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import DatasourceTree from './components/DatasourceTree';
 import QueryResult from './components/QueryResult';
 import QueryTabs from './components/QueryTabs';
@@ -22,6 +22,15 @@ function App() {
     // 多数据源相关状态
     const [selectedDatasources, setSelectedDatasources] = useState([]); // 选中的数据源列表
     const [multiQueryResults, setMultiQueryResults] = useState([]); // 多数据源查询结果
+
+    // 布局相关状态
+    const [editorHeight, setEditorHeight] = useState(() => {
+        const saved = localStorage.getItem('editorHeight');
+        return saved ? parseInt(saved) : 50; // 默认50%
+    });
+    const [layoutMode, setLayoutMode] = useState('split'); // 'split', 'editor-only', 'result-only'
+    const [isDragging, setIsDragging] = useState(false);
+    const containerRef = useRef(null);
 
     // 检查API连接状态
     const handleCheckApiConnection = async () => {
@@ -254,19 +263,101 @@ function App() {
         setMultiQueryResults([]);
     };
 
+    // 处理拖拽分隔条
+    const handleMouseDown = useCallback(() => {
+        setIsDragging(true);
+    }, []);
+
+    const handleMouseMove = useCallback(
+        (e) => {
+            if (!isDragging || !containerRef.current) return;
+
+            const container = containerRef.current;
+            const containerRect = container.getBoundingClientRect();
+            const containerHeight = containerRect.height;
+            const mouseY = e.clientY - containerRect.top;
+            
+            // 计算百分比，限制在20%-80%之间
+            let percentage = (mouseY / containerHeight) * 100;
+            percentage = Math.max(20, Math.min(80, percentage));
+            
+            setEditorHeight(percentage);
+        },
+        [isDragging]
+    );
+
+    const handleMouseUp = useCallback(() => {
+        if (isDragging) {
+            setIsDragging(false);
+            localStorage.setItem('editorHeight', editorHeight.toString());
+        }
+    }, [isDragging, editorHeight]);
+
+    // 监听鼠标事件
+    useEffect(() => {
+        if (isDragging) {
+            document.body.classList.add('dragging');
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+            return () => {
+                document.body.classList.remove('dragging');
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+            };
+        }
+    }, [isDragging, handleMouseMove, handleMouseUp]);
+
+    // 快速切换布局模式
+    const toggleLayoutMode = (mode) => {
+        // 如果点击的是当前已激活的模式，则返回分屏模式
+        if (layoutMode === mode && mode !== 'split') {
+            setLayoutMode('split');
+        } else {
+            setLayoutMode(mode);
+        }
+    };
+
+    // 在最开头新增 LayoutToggle 组件
+    const LayoutToggle = ({ layoutMode, toggleLayoutMode }) => (
+        <div className="layout-toggle-buttons">
+            <button
+                className={`layout-btn ${layoutMode === 'editor-only' ? 'active' : ''}`}
+                onClick={() => toggleLayoutMode('editor-only')}
+                title="专注编辑"
+            >
+                📝
+            </button>
+            <button
+                className={`layout-btn ${layoutMode === 'split' ? 'active' : ''}`}
+                onClick={() => toggleLayoutMode('split')}
+                title="分屏模式"
+            >
+                ⬍
+            </button>
+            <button
+                className={`layout-btn ${layoutMode === 'result-only' ? 'active' : ''}`}
+                onClick={() => toggleLayoutMode('result-only')}
+                title="专注结果"
+            >
+                📊
+            </button>
+        </div>
+    );
+
     return (
         <div className="app">
             <header className="app-header">
-                <h1>SQL 查询工具</h1>
+                <h1>多功能SQL查询工具</h1>
                 <div className="header-controls">
                     <button className={`mode-toggle ${apiMode}`} onClick={toggleApiMode} title="切换API模式">
-                        {apiMode === 'mock' ? '模拟数据' : '真实API'}
+                        {apiMode === 'mock' ? '当前为模拟数据模式' : '当前为真实API模式'}
                     </button>
 
                     {/* API状态指示器 */}
                     {apiMode === 'real' && (
                         <div className={`api-status ${apiStatus}`} title={`API状态: ${apiMessage}`}>
                             <span className="status-dot"></span>
+                            <span className="status-text">API状态:</span>
                             <span className="status-text">
                                 {apiStatus === 'connected' && '已连接'}
                                 {apiStatus === 'disconnected' && '未连接'}
@@ -300,9 +391,15 @@ function App() {
                     )}
 
                     {/* 中间和右侧内容区 */}
-                    <div className="content-area">
+                    <div className="content-area" ref={containerRef}>
                         {/* 编辑器区域 */}
-                        <div className="editor-section">
+                        <div 
+                            className={`editor-section ${layoutMode === 'result-only' ? 'hidden' : ''}`}
+                            style={{ 
+                                height: layoutMode === 'split' ? `${editorHeight}%` : 
+                                        layoutMode === 'editor-only' ? '100%' : '0%'
+                            }}
+                        >
                             <div className="editor-header">
                                 <div className="editor-title">
                                     <h3>SQL 查询</h3>
@@ -314,6 +411,10 @@ function App() {
                                     )}
                                 </div>
                                 <div className="editor-actions">
+                                    {/* 只在分屏和editor-only时显示布局切换 */}
+                                    {(layoutMode === 'split' || layoutMode === 'editor-only') && (
+                                        <LayoutToggle layoutMode={layoutMode} toggleLayoutMode={toggleLayoutMode} />
+                                    )}
                                     <button
                                         className="execute-btn"
                                         onClick={() => handleExecuteQuery(selectedText)}
@@ -331,8 +432,26 @@ function App() {
                             />
                         </div>
 
+                        {/* 可拖拽的分隔条 */}
+                        {layoutMode === 'split' && (
+                            <div 
+                                className={`resizer ${isDragging ? 'dragging' : ''}`}
+                                onMouseDown={handleMouseDown}
+                            >
+                                <div className="resizer-handle">
+                                    <div className="resizer-line"></div>
+                                </div>
+                            </div>
+                        )}
+
                         {/* 结果区域 */}
-                        <div className="result-section">
+                        <div 
+                            className={`result-section ${layoutMode === 'editor-only' ? 'hidden' : ''}`}
+                            style={{ 
+                                height: layoutMode === 'split' ? `${100 - editorHeight}%` : 
+                                        layoutMode === 'result-only' ? '100%' : '0%'
+                            }}
+                        >
                             <div className="result-header">
                                 <div className="result-title">
                                     <h3>查询结果</h3>
@@ -345,6 +464,10 @@ function App() {
                                     )}
                                 </div>
                                 <div className="result-actions">
+                                    {/* 只在 result-only 时显示布局切换 */}
+                                    {layoutMode === 'result-only' && (
+                                        <LayoutToggle layoutMode={layoutMode} toggleLayoutMode={toggleLayoutMode} />
+                                    )}
                                     {executionTime !== null && (
                                         <span className="execution-time">执行时间: {executionTime.toFixed(2)}ms</span>
                                     )}
@@ -357,6 +480,7 @@ function App() {
                                     queryResults={multiQueryResults}
                                     onCloseTab={handleCloseTab}
                                     onCloseAll={handleCloseAllTabs}
+                                    query={selectedText || sqlQuery}
                                 />
                             ) : (
                                 // 单数据源查询结果

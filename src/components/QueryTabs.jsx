@@ -1,9 +1,42 @@
 import { useState } from 'react';
 import '../styles/components/QueryTabs.css';
 import QueryResult from './QueryResult';
+import { exportMultiDatasourcesToZip } from '../services/datasourceApi';
 
-const QueryTabs = ({ queryResults, onCloseTab, onCloseAll }) => {
+const QueryTabs = ({ queryResults, onCloseTab, onCloseAll, query }) => {
     const [activeTab, setActiveTab] = useState(0);
+    const [isExporting, setIsExporting] = useState(false);
+
+    // 导出所有数据源为ZIP
+    const handleExportAllToZip = async () => {
+        if (!query || !query.trim()) {
+            alert('没有可导出的SQL查询语句');
+            return;
+        }
+
+        if (!queryResults || queryResults.length === 0) {
+            alert('没有可导出的查询结果');
+            return;
+        }
+
+        setIsExporting(true);
+
+        try {
+            // 提取所有数据源编码
+            const datasourceCodes = queryResults.map(result => result.datasourceCode);
+
+            // 生成文件名前缀
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:.]/g, '-');
+            const filenamePrefix = `multi_datasource_query_${timestamp}`;
+
+            await exportMultiDatasourcesToZip(query, datasourceCodes, filenamePrefix);
+        } catch (error) {
+            console.error('导出多数据源Excel失败:', error);
+            alert(`导出失败: ${error.message}`);
+        } finally {
+            setIsExporting(false);
+        }
+    };
 
     if (!queryResults || queryResults.length === 0) {
         return (
@@ -66,11 +99,21 @@ const QueryTabs = ({ queryResults, onCloseTab, onCloseAll }) => {
                     ))}
                 </div>
 
-                {queryResults.length > 1 && (
-                    <button className="close-all-btn" onClick={onCloseAll} title="关闭所有标签页">
-                        关闭所有
+                <div className="tabs-actions">
+                    <button 
+                        className="export-all-btn" 
+                        onClick={handleExportAllToZip}
+                        disabled={isExporting}
+                        title="导出所有数据源为ZIP压缩包"
+                    >
+                        📦 {isExporting ? '导出中...' : '导出为ZIP'}
                     </button>
-                )}
+                    {queryResults.length > 1 && (
+                        <button className="close-all-btn" onClick={onCloseAll} title="关闭所有标签页">
+                            关闭所有
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div className="tabs-content">
@@ -108,6 +151,7 @@ const QueryTabs = ({ queryResults, onCloseTab, onCloseAll }) => {
                                 isLoading={false}
                                 query=""
                                 database={currentResult.datasourceCode}
+                                showExportButton={false}
                             />
                         </div>
                     </div>
