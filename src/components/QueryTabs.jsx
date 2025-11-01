@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { exportMultiDatasourcesToZip } from '../services/datasourceApi';
 import '../styles/components/QueryTabs.css';
 import QueryResult from './QueryResult';
-import { exportMultiDatasourcesToZip } from '../services/datasourceApi';
 
 const QueryTabs = ({ queryResults, onCloseTab, onCloseAll, query }) => {
     const [activeTab, setActiveTab] = useState(0);
@@ -100,8 +100,8 @@ const QueryTabs = ({ queryResults, onCloseTab, onCloseAll, query }) => {
                 </div>
 
                 <div className="tabs-actions">
-                    <button 
-                        className="export-all-btn" 
+                    <button
+                        className="export-all-btn"
                         onClick={handleExportAllToZip}
                         disabled={isExporting}
                         title="导出所有数据源为ZIP压缩包"

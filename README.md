@@ -102,15 +102,7 @@ Qoder 是一个专为数据分析师、数据库管理员和开发人员设计�
     -   **专注编辑器模式**：编辑器占满整个界面，专注编写 SQL
     -   **分屏模式**：编辑器和结果区域并排，可自由调整比例
     -   **专注结果模式**：结果区域占满整个界面，专注查看数据
-    -   可拖拽分隔条调整高度比例，设置自动保存到 localStorage
-    -   响应式设计，支持移动端操作
-
--   **🔄 错误处理增强**
-
-    -   多数据源查询错误独立展示
-    -   失败查询生成包含错误信息的 Excel 文件
-    -   详细的错误信息和执行时间统计
-    -   标签页状态颜色区分（成功/失败）
+    -   可拖拽分隔条调整高度比例，设置自动保存
 
 -   **🔄 双模式支持**
 
@@ -128,28 +120,21 @@ Qoder 是一个专为数据分析师、数据库管理员和开发人员设计�
 
 ### 前端框架
 
--   **React 19.1.1** - 最新的 React 框架，支持并发特性
--   **Vite 7.1.2** - 极速构建工具，提供热重载和优化打包
--   **Monaco Editor 0.52.2** - VS Code 编辑器内核，专业的代码编辑体验
+-   **React 19.1.1** - 最新的 React 框架
+-   **Vite 7.1.2** - 极速构建工具
+-   **Monaco Editor 0.52.2** - VS Code 编辑器内核
 
 ### 开发工具
 
--   **@monaco-editor/react ^4.7.0** - Monaco Editor React 封装
--   **@types/react ^19.1.10** - React TypeScript 类型定义
--   **@types/react-dom ^19.1.7** - React DOM TypeScript 类型定义
--   **@vitejs/plugin-react ^5.0.0** - Vite React 插件
--   **ESLint 9.33.0** - 代码质量检查和规范
--   **eslint-plugin-react-hooks ^5.2.0** - React Hooks 规则检查
--   **eslint-plugin-react-refresh ^0.4.20** - React Fast Refresh 支持
--   **CSS3** - 现代化样式，支持响应式设计和动画
--   **Fetch API** - 原生网络请求，支持超时和重试
+-   **ESLint 9.33.0** - 代码质量检查
+-   **CSS3** - 现代化样式，支持响应式设计
+-   **Fetch API** - 原生网络请求
 
 ### 构建配置
 
 -   **ES6+ Modules** - 现代 JavaScript 模块系统
--   **Hot Reload** - 开发时热更新，提升开发效率
--   **Tree Shaking** - 自动移除未使用代码，优化包体积
--   **代码分割** - 按路由和组件分割代码，提高加载性能
+-   **Hot Reload** - 开发时热更新
+-   **Tree Shaking** - 自动移除未使用代码
 
 ## 🚀 快速开始
 
@@ -218,7 +203,7 @@ npm run lint
 
 ```bash
 # API 服务器地址
-VITE_API_BASE_URL=http://localhost:8080
+VITE_API_BASE_URL=http://localhost:3000
 
 # API 请求超时时间（毫秒）
 VITE_API_TIMEOUT=30000
@@ -231,25 +216,6 @@ VITE_DEV_MODE=true
 ```
 
 > ⚠️ **注意**：在 Vite 项目中，只有以 `VITE_` 为前缀的环境变量才能在前端代码中访问。
-
-### 环境变量示例文件
-
-项目已包含 `.env.example` 文件作为配置模板，包含所有可用的配置项：
-
-```bash
-# API 配置
-VITE_API_BASE_URL=http://localhost:8080
-VITE_API_TIMEOUT=30000
-
-# 功能开关
-VITE_ENABLE_AUTH=false
-VITE_ENABLE_MOCK_DATA=true
-VITE_DEV_MODE=true
-
-# 编辑器配置
-VITE_EDITOR_THEME=vs-dark
-VITE_EDITOR_FONT_SIZE=14
-```
 
 ## 📁 项目结构
 
@@ -279,10 +245,10 @@ qoder/
 
 #### 🎯 组件层 (`src/components/`)
 
--   **`SqlEditor.jsx`** - 基于 Monaco Editor 的 SQL 编辑器，支持语法高亮和布局切换
--   **`QueryResult.jsx`** - 查询结果展示组件，支持分页、复制、导出和错误处理
--   **`QueryTabs.jsx`** - 多标签页管理组件，支持多数据源结果展示和ZIP导出
--   **`DatasourceTree.jsx`** - 数据源树形组件，支持多级分类管理和多选操作
+-   **`SqlEditor.jsx`** - 基于 Monaco Editor 的 SQL 编辑器，支持布局切换
+-   **`QueryResult.jsx`** - 查询结果展示，支持分页、复制、导出等功能
+-   **`DatasourceTree.jsx`** - 数据源树形组件，支持多级分类和多选
+-   **`QueryTabs.jsx`** - 多标签页组件，管理多数据源查询结果
 
 #### 🔧 服务层 (`src/services/`)
 
@@ -509,7 +475,7 @@ Content-Type: application/json
 
 #### 6. 多数据源 ZIP 导出
 
-```http
+```
 POST /api/export-multi-datasource-excel
 Content-Type: application/json
 
@@ -525,18 +491,8 @@ Content-Type: application/json
 }
 ```
 
-**成功响应：** ZIP 文件流
+**响应：** ZIP 文件流
 Content-Type: application/zip
-
-**响应头：**
-```
-Content-Disposition: attachment; filename="multi_export_20240101_120000.zip"
-```
-
-**ZIP 包内容：**
-- `main_business_主业务数据库.xlsx` - 主业务数据库查询结果
-- `order_db_订单数据库.xlsx` - 订单数据库查询结果
-- 如果查询失败，将生成包含错误信息的 Excel 文件
 
 ### 错误处理
 
